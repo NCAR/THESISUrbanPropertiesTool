@@ -1,0 +1,22 @@
+&gen_data_namelist
+  input_dir       = "/project/iams/thesis/data/urban_properties/gen_data01/"
+  urban_tbd_fn    = "tall_bldg_dist_1km.nc"
+  urban_hd_fn     = "high_dens_1km.nc"
+  urban_md_fn     = "med_dens_1km.nc"
+  regions_fn      = "urban_regions.nc"
+  urban_prop_dir  = "./"
+  urban_prop_fn   = "region_prop.LID.csv"
+  metadata_title  = "<title meta-data for netCDF file>"
+  metadata_source = "<data source meta-data for netCDF file>"
+  metadata_caseID = "<case ID meta-data for netCDF file>"
+  output_dir      = "./"
+  output_fn_1km   = "urban_properties_data.1km.LID.nc"
+  output_fn_05deg = "urban_properties_data.05deg.LID.nc"
+
+
+! additional input required by gen_data_clm.ncl
+!  template_dir    = "/project/iams/thesis/data/urban_properties/gen_data01/"
+!  template_fn     = "CLM50_template_c160923.nc"
+!  mksrf_dir       = "/project/iams/thesis/data/urban_properties/gen_data01/"
+!  mksrf_fn        = "surfdata_0.9x1.25_16pfts_CMIP6_simyr1850_c170724.nc"
+!  output_fn_clm   = "urban_properties_data.clm50.LID.nc"

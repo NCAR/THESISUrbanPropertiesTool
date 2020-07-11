@@ -1,0 +1,5 @@
+qsub -X -I -l select=1:ncpus=1:mpiprocs=1:mem=109GB -l walltime=02:00:00 -q regular -A P93300041
+./urban_prop.csh
+setenv LID YYMMDD-HHMMSS
+setenv FN_MKSRF_NML gen_data.nml
+ncl gen_data_clm.ncl LID=\"$LID\" nml_fn=\"$FN_MKSRF_NML\"

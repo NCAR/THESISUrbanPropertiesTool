@@ -1,0 +1,191 @@
+==========================================================================================
+SVN $Id: ChangeLog.txt 234 2018-06-22 21:02:03Z kauff $
+SVN $URL: https://svn-iam-thesis.cgd.ucar.edu/urban_properties/trunk_tags/urban_properties_180622/ChangeLog.txt $
+==========================================================================================
+Originator: kauff
+Date: 2018 June 22
+Model: urban_properties
+Version: urban_properties_180622
+One-line summary: add hooks to gen_data_clm.ncl
+Changes made:
+
+Add commented-out hooks for gen_data_clm.ncl -- as a reference to those who might use it.
+A prerequisite for running gen_data_clm.ncl is running CLM's "mksrf" (make surface data sets), 
+and the mksrf code is not provide here (it is bundled with the CLM source code).  Hence, 
+while the gen_data_clm.ncl code is provide here, it is NOT called from the urban_properties 
+driver script (urban_prop.csh)
+
+==========================================================================================
+Originator: kauff
+Date: 2018 June 8
+Model: urban_properties
+Version: urban_properties_180608
+One-line summary: new gen_data_*.ncl functionality
+Changes made:
+
+Notes:
+o gen_data.nml is a new "namelist" file used by gen_data_*.ncl code
+  The intent was that the following three codes would run in order...
+  (1) gen_data_1km.ncl   -- creates urban properties data on a 1km grid
+  (2) gen_data_05deg.ncl -- creates urban properties data on a 1/2 degree grid
+  (3) gen_data_clm.ncl   -- creates urban properties data suitable for input to CLM
+  ...resulting in a CLM input data file -- but it turns out that there is an
+  additional code that must be run between steps (2) and (3), code that is not
+  practical to include here (rather it comes bundled with the CLM source code)
+  Note this final step (3) is very CLM-specific, thus prehaps doesn't belong
+  here with more generic urban properties specifications.
+  
+  Thus this new tag adds the functionality to run steps (1) and (2) but not (3)
+  Maybe this will be revisited in future urban properties tags.
+
+M urban_prop.csh
+A gen_data_1km.ncl   -- runs first
+A gen_data_05deg.ncl -- runs second
+A gen_data_clm.ncl   -- runs last, this will NOT be included as it is CLM specific
+A gen_data.nml       -- input specification for gen_data_*.ncl
+
+==========================================================================================
+Originator: kauff
+Date: 2017 Aug 11
+Model: urban_properties
+Version: urban_properties_170811
+One-line summary: replace spaces in variable names with underscores, add Scenarios_Feddema_2017/
+Changes made:
+
+o replace spaces in variable names with underscores
+o remove unnecessary trailing 0's in *.spec.csv files
+
+M       city_spec.csv
+M       lam_spec.csv
+
+o add non-default/non-standard specification files that implement/document Feddema 
+  scenarios circa August 2017...
+A       Scenarios_Feddema_2017/
+
+==========================================================================================
+Originator: kauff
+Date: Fri Jul 21 16:57:50 MDT 2017
+Model: urban_properties
+Version: urban_properties_170721
+One-line summary: corrections as per Johannes Feddema
+Changes made:
+
+M       src/lam_spec.csv  -- bridge thickness must not be thinner than main material
+M       src/mat_prop.csv  -- tweaks to vol_heat_cap wrt the use of the *average* 
+                             density and spec_heat of several similar materials
+
+==========================================================================================
+Originator: kauff
+Date: Fri Feb 17 17:58:29 MST 2017
+Model: urban_properties
+Version: urban_properties_170217
+One-line summary: 5-digits accuracy in all text output
+Changes made:
+
+output text files formatted so that all numbers have at least five digits accuracy 
+(when using default input values)
+
+==========================================================================================
+Originator: kauff
+Date: Wed Nov 30 13:06:54 MST 2016
+Model: urban_properties
+Version: urban_properties_161130
+One-line summary: re-factoring in support of GUI interface
+Changes made:
+
+(1) constructing (windows + frames) is now done same process as (walls + bridge)
+    thus eliminating the need to merge windows with walls
+    thus this step is eliminated:
+    unix> gen_surf.ncl < surf_spec_fw > surf_prop_fw.ncl
+(2) walls are no longer merged with (windows + frames) via
+    unix> gen_surf.ncl < surf_spec_fw > surf_prop_fw.ncl
+    rather, they remain separate until they are merged in this step
+    unix> gen_city.ncl < city_spec_fw > city_prop_fw.ncl
+    which implies that city_spec.csv not only specifies what wall to use,
+    but also what window to insert into the wall, and what window fraction to use
+(o) together, (1) and (2) mean this code and input data are no longer 
+    needed or used: gen_surf_ncl, surf_spec_fw.csv, surf_spec_ww.csv
+    and these output files are not created or used as 
+    input: surf_prop_fw.csv, surf_prop_ww.csv
+    thus simplifying the work flow and making it easier to implement via GUI
+
+This code re-factoring is answer changing, but it is believed this new code is
+more accurate -- because there is less i/o of formatted, limited precision data,
+and also the re-factored code uses double precision everywhere, whereas the old
+code did not.
+
+==========================================================================================
+Originator: kauff
+Date: Tue Sep 20 14:06:56 MDT 2016
+Model: urban_properties
+Version: urban_properties_160920
+One-line summary: changes to city_spec.c and surf_spec_ww.csv
+Changes made:
+
+o changes to city_spec.c and surf_spec_ww.csv
+   as per...
+   On Sun, Aug 7, 2016 at 2:36 PM, Johannes Feddema <feddema@uvic.ca> wrote:
+   Subject: Re: One question about V2 of the dataset
+   Attached are two files.  In order to do the windows I had to add
+   a few new walls therefore there are 2 changed files.
+
+==========================================================================================
+Originator: kauff
+Date: Tue Jul 26 16:10:18 MDT 2016
+Model: urban_properties
+Version: urban_properties_160726
+One-line summary: changes to T max for Australia_TBD_1 and Mid-East_HD_1
+Changes made: 
+
+o new T max values in city_spec.csv for Australia_TBD_1 and Mid-East_HD_1 
+  from Keith Oleson, circa 2016 July 26
+o documentation enhancements
+
+==========================================================================================
+
+Originator: kauff
+Date: Thu Jun 30 12:02:00 MDT 2016
+Model: urban_properties
+Version: urban_properties_160415
+One-line summary: new material properties and construction details
+Changes made: 
+
+o tag name back-dated to date of last code change on trunk
+o new material properties and construction details as per Johannes Feddema and
+  Keith Oleson, circa 2016 April 15
+o format cleanup, all special values now -999 (some were -0.999)
+
+==========================================================================================
+
+Originator: kauff
+Date: Tue Dec 22 11:02:56 MST 2015
+Model: urban_properties
+Version: urban_properties_151222
+One-line summary: reworked to implement 10-layer approach, new road materials
+Changes made: 
+
+o no longer are all layers merged into one layer -- rather 1 to 10 equal-thickness layers 
+  of tk & cv are specified and preserved (as 10 layers) thru the whole tool chain.   
+o has new road materials (mat_prop.cvs) and road layer specifications (lam_spec.csv)
+  as chosen by Johannes Feddema and Keith Oleson
+
+==========================================================================================
+ 
+
+Originator: kauff
+Date: Fri May 29 16:24:12 MDT 2015
+Model: urban_properties
+Version: urban_properties_150529
+One-line summary: 1st tagged version, validated
+Changes made: 
+
+See email "THESIS Urban Properties tool validation" dated 2015 May 22
+(Keith Oleson <oleson@ucar.edu>, "Johannes J. Feddema" <feddema@ku.edu>,
+Peter Lawrence <lawrence@ucar.edu>) which explains the validation process in detail.  
+
+In short, this code reproduces the output of the original Excel spreadsheet, except that 
+it fixes various bugs.  By reintroducing the bugs here (which is not the default) one can 
+reproduce the results of the spreadsheet.
+
+==========================================================================================
+ 

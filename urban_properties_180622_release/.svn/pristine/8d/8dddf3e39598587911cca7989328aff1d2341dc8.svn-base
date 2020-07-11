@@ -1,0 +1,397 @@
+short_name       , conc_panel/conc_masonry
+long_name        , concrete panel with concrete masonry
+comment          , 
+main_thickness   , 0.0351
+bridge_thickness , 0.0351
+main_material    , conc_panel    , conc_panel    , conc_panel    , air           , conc_block    , conc_block    , conc_block    , XPS           , XPS    , drywall_int
+bridge_material  , conc_panel    , conc_panel    , EPDM          , steel         , conc_block    , conc_block    , conc_block    , steel         , EPDM   , drywall_int
+bridge_fraction  , 0.025
+EOD
+short_name       , glass_curtain
+long_name        ,"glass curtain, commercial"
+comment          , special case: essentially a frame to support a glass curtain
+main_thickness   , 0.0062
+bridge_thickness , 0.0062
+main_material    , granite       , granite       , granite       , granite       , EPDM          , steel         , steel         , steel         , XPS   , drywall_int
+bridge_material  , granite       , granite       , granite       , granite       , EPDM          , steel         , steel         , steel         , XPS   , drywall_int
+bridge_fraction  , 0.1
+EOD
+short_name       , brick_veneer/conc_masonry
+long_name        , brick veneer with concrete masonry
+main_thickness   , 0.0351
+bridge_thickness , 0.0351
+main_material    , brick_clay    , brick_clay    , air           , conc_block    , conc_block    , conc_block    , conc_block    , XPS           , XPS   , drywall_int
+bridge_material  , brick_clay    , brick_clay    , EPDM          , steel         , conc_block    , conc_block    , conc_block    , steel         , EPDM  , drywall_int
+bridge_fraction  , 0.05
+EOD
+short_name       , stone_curtain/conc_masonry
+long_name        , stone curtain with concrete masonry
+main_thickness   , 0.0287
+bridge_thickness , 0.0287
+main_material    , stone_avg     , air           , conc_block    , conc_block    , conc_block    , conc_block    , conc_block    , conc_block    , XPS   , drywall_int
+bridge_material  , stone_avg     , EPDM          , steel         , conc_block    , conc_block    , conc_block    , conc_block    , conc_block    , steel , drywall_int
+bridge_fraction  , 0.05
+EOD
+short_name       , plaster_veneer/brick_masonry
+long_name        , plaster veneer with brick masonry
+main_thickness   , 0.024
+bridge_thickness , 0.024 
+main_material    , stucco        , brick_clay    , brick_clay    , brick_clay    , air           , drywall_ext , insul_wool   , insul_wool   , insul_wool   , drywall_int
+bridge_material  , stucco        , brick_clay    , brick_clay    , brick_clay    , wood_unpaint  , drywall_ext , wood_unpaint , wood_unpaint , wood_unpaint , drywall_int
+bridge_fraction  , 0.15
+EOD
+short_name       , plaster_veneer/conc_masonry
+long_name        , plaster veneer with concrete masonry
+main_thickness   , 0.025
+bridge_thickness , 0.025 
+main_material    , stucco        , conc_block    , conc_block    , conc_block    , conc_block    , conc_block    , conc_block    , conc_block    , XPS           , drywall_int
+bridge_material  , stucco        , conc_block    , conc_block    , conc_block    , conc_block    , conc_block    , conc_block    , conc_block    , wood_unpaint  , drywall_int
+bridge_fraction  , 0.15
+EOD
+short_name       , EIFS_facade/wood_frame
+long_name        , EIFS facade/wood frame
+main_thickness   , 0.0159
+bridge_thickness , 0.0159
+main_material    , EIFS      , EPS          , EPS          , drywall_ext  , insul_wool  , insul_wool  , insul_wool  , insul_wool  , insul_wool  , drywall_int
+bridge_material  , EIFS      , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint, wood_unpaint, wood_unpaint, wood_unpaint, wood_unpaint, drywall_int
+bridge_fraction  , 0.15
+EOD
+short_name       , wood_frame/cementbrd_siding
+long_name        , wood frame with cement board siding
+comment          , residential
+main_thickness   , 0.0137
+bridge_thickness , 0.0137
+main_material    , cement_board  , air           , OSB     , insul_wool   , insul_wool   , insul_wool   , insul_wool   , insul_wool   , insul_wool   , drywall_int
+bridge_material  , cement_board  , wood_unpaint  , OSB     , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , drywall_int
+bridge_fraction  , 0.15
+EOD
+short_name       , wood_frame/hardbrd_siding
+long_name        , wood frame with hardboard
+comment          , residential
+main_thickness   , 0.0125
+bridge_thickness , 0.0125
+main_material    , siding_hardb  , air           , OSB     , insul_wool   , insul_wool   , insul_wool   , insul_wool   , insul_wool   , insul_wool   , drywall_int
+bridge_material  , siding_hardb  , wood_unpaint  , OSB     , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , drywall_int
+bridge_fraction  , 0.15
+EOD
+short_name       , wood_frame/wood_siding
+long_name        , wood frame with wood siding
+comment          , residential
+main_thickness   , 0.0125
+bridge_thickness , 0.0125
+main_material    , wood_paint  , air             , plywood_wall , insul_wool    ,drywall_int   ,drywall_int   ,drywall_int   ,drywall_int   ,drywall_int   ,drywall_int
+bridge_material  , wood_paint  , wood_unpaint    , plywood_wall , wood_unpaint  ,drywall_int   ,drywall_int   ,drywall_int   ,drywall_int   ,drywall_int   ,drywall_int
+bridge_fraction  , 0.15
+EOD
+short_name       , wood_frame/unins_siding
+long_name        , wood frame/unins wood siding
+comment          , residential
+main_thickness   , 0.0041
+bridge_thickness , 0.0041
+main_material    , wood_paint    , wood_unpaint  , wood_unpaint  , wood_unpaint  , air           , plywood_wall  , plywood_wall  , drywall_int   , drywall_int   , drywall_int
+bridge_material  , wood_paint    , wood_unpaint  , wood_unpaint  , wood_unpaint  , wood_unpaint  , plywood_wall  , plywood_wall  , drywall_int   , drywall_int   , drywall_int
+bridge_fraction  , 0.15
+EOD
+short_name       , wood_frame/alum_siding
+long_name        , wood frame with aluminum or vinyl siding
+comment          , residential
+main_thickness   , 0.0116
+bridge_thickness , 0.0116
+main_material    , siding_alum   , air           , OSB  , insul_wool    , insul_wool    , insul_wool    , insul_wool    , insul_wool    , insul_wool    , drywall_int
+bridge_material  , siding_alum   , wood_unpaint  , OSB  , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , drywall_int
+bridge_fraction  , 0.1
+EOD
+short_name       , wood_frame/stucco
+long_name        , wood frame with stucco siding
+comment          , residential
+main_thickness   , 0.0156
+bridge_thickness , 0.0156
+main_material    , stucco   , stucco  , stucco   ,  plywood_wall  , insul_wool    , insul_wool    , insul_wool    , insul_wool    , insul_wool    , drywall_int
+bridge_material  , stucco   , stucco  , stucco   ,  plywood_wall  , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , drywall_int
+bridge_fraction  , 0.15
+EOD
+short_name       , brick_masonry/reinforced
+long_name        , brick masonry/reinforced
+comment          , residential
+main_thickness   , 0.0238
+bridge_thickness , 0.0238
+main_material    , brick_clay, brick_clay, brick_clay, brick_clay,  air           , drywall_ext  , insul_wool    , insul_wool    , insul_wool    , drywall_int
+bridge_material  , brick_clay, brick_clay, brick_clay, brick_clay,  wood_unpaint  , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , drywall_int
+bridge_fraction  , 0.15
+EOD
+short_name       , stone
+long_name        , stone
+comment          , residential
+main_thickness   , 0.0338
+bridge_thickness , 0.0338
+main_material    , stone_avg , stone_avg , stone_avg , stone_avg , stone_avg ,  air           , drywall_ext  , insul_wool    , insul_wool    , drywall_int
+bridge_material  , stone_avg , stone_avg , stone_avg , stone_avg , stone_avg ,  wood_unpaint  , wood_unpaint , wood_unpaint , wood_unpaint , drywall_int
+bridge_fraction  , 0.2
+EOD
+short_name       , concrete_block        
+long_name        , concrete block
+main_thickness   , 0.02
+bridge_thickness , 0.02
+main_material    , conc_block  , conc_block  , conc_block  , conc_block  , conc_block  , conc_block  , conc_block  , conc_block  , conc_block  , conc_block
+bridge_material  , conc_block  , conc_block  , conc_block  , conc_block  , conc_block  , conc_block  , conc_block  , conc_block  , conc_block  , conc_block
+bridge_fraction  , 0.0
+EOD
+short_name       , corrugate    
+long_name        , corrugated metal
+main_thickness   , 0.0002
+bridge_thickness , 0.0002
+main_material    , corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate
+bridge_material  , corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate    ,corrugate
+bridge_fraction  , 0
+EOD
+short_name       , mud_wall              
+long_name        , mud or adobe wall
+main_thickness   , 0.025
+bridge_thickness , 0.025
+main_material    , mud  , mud  , mud  , mud  , mud  , mud  , mud  , mud  , mud  , mud
+bridge_material  , mud  , mud  , mud  , mud  , mud  , mud  , mud  , mud  , mud  , mud
+bridge_fraction  , 0
+EOD
+short_name       , rubble                
+long_name        , rubble wall 
+main_thickness   , 0.09
+bridge_thickness , 0.09
+main_material    , stone_avg , stone_avg , stone_avg , stone_avg , stone_avg , rubble, stone_avg  , stone_avg  , stone_avg  , stone_avg
+bridge_material  , stone_avg , stone_avg , stone_avg , stone_avg , stone_avg , rubble, stone_avg  , stone_avg  , stone_avg  , stone_avg
+bridge_fraction  , 0
+EOD
+short_name       , galv_steel           
+long_name        , galvanized steel wall
+main_thickness   , 0.0118
+bridge_thickness , 0.0118
+main_material    , steel,  XPS,  XPS,  XPS,  XPS,  XPS,  XPS,  XPS,  air,steel 
+bridge_material  , steel,steel,steel,steel,steel,steel,steel,steel,steel,steel 
+bridge_fraction  , 0.075
+EOD
+comment          ,============= glass with frames (frames are the bridge material) =========
+short_name       , glass_1r_w
+long_name        ,"glass_1r_w, residential wood with frame"
+main_thickness   , 0.00035 
+bridge_thickness , 0.0025 
+main_material    , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane
+bridge_material  , wood_wpaint , wood_unpaint, wood_unpaint, wood_unpaint, wood_unpaint, wood_unpaint, wood_unpaint, wood_unpaint, wood_unpaint, wood_wpaint
+bridge_fraction  , 0.10
+EOD
+short_name       , glass_1r_m
+long_name        ,"glass_1r_m, residential metal with frame"
+main_thickness   , 0.00035 
+bridge_thickness , 0.00125 
+main_material    , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane
+bridge_material  , EPDM        , steel       , steel       , steel       , steel       , steel       , steel       , steel       , steel       , EPDM
+bridge_fraction  , 0.05
+EOD
+short_name       , glass_1r_t
+long_name        ,"glass_1r_t, residential tropical with frame"
+main_thickness   , 0.00035 
+bridge_thickness , 0.00125
+main_material    , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane
+bridge_material  , iron        , iron        , iron        , iron        , iron        , iron        , iron        , iron        , iron        , iron
+bridge_fraction  , 0.1
+EOD
+short_name       , glass_1c
+long_name        ,"glass_1c, commercial with frame"
+main_thickness   , 0.0007
+bridge_thickness , 0.00125
+main_material    , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane , window_pane
+bridge_material  , EPDM        , steel       , steel       , steel       , steel       , build_paper , steel       , steel       , steel       , EPDM
+bridge_fraction  , 0.05
+EOD
+short_name       , glass_2r_w
+long_name        ,"glass_2r_w, residential with wood frame"
+main_thickness   , 0.00175 
+bridge_thickness , 0.0025 
+main_material    , window_pane , window_pane  , air          , air          , air          , air          , air          , air          , window_pane  , window_pane
+bridge_material  , wood_wpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint , wood_wpaint
+bridge_fraction  , 0.1
+EOD
+short_name       , glass_2r_m
+long_name        ,"glass_2r_m, residential with metal frame"
+main_thickness   , 0.00175
+bridge_thickness , 0.00200
+main_material    , window_pane , window_pane , air  , air  , air  , air  , air  , air  , window_pane , window_pane
+bridge_material  , EPDM        , steel       , steel, steel, steel, steel, steel, steel, steel       , EPDM
+bridge_fraction  , 0.05
+EOD
+short_name       , glass_2c
+long_name        ,"glass_2c, commercial with frame"
+main_thickness   , 0.0024
+bridge_thickness , 0.0031
+main_material    , window_pane , window_pane , window_pane , air  , air  , air  , air  , air  , window_pane , window_pane
+bridge_material  , EPDM        , steel       , steel       , steel, steel, EPDM , steel, steel, steel       , EPDM
+bridge_fraction  , 0.05
+EOD
+short_name       , glass_3r
+long_name        ,"glass_3r, residential with frame"
+main_thickness   , 0.00175
+bridge_thickness , 0.0025
+main_material    , window_pane , window_pane , argon       , argon       , argon       , window_pane  , window_pane  , argon        , window_pane , window_pane
+bridge_material  , wood_wpaint , wood_unpaint, wood_unpaint, wood_unpaint, wood_unpaint, wood_unpaint , wood_unpaint , wood_unpaint , wood_unpaint, wood_wpaint
+bridge_fraction  , 0.1
+EOD
+short_name       , glass_3c
+long_name        ,"glass_3c commercial with frame"
+main_thickness   , 0.0024 
+bridge_thickness , 0.0031
+main_material    , window_pane , window_pane , window_pane , argon, argon, window_pane  , window_pane , argon, window_pane, window_pane 
+bridge_material  , EPDM        , steel       , steel       , EPDM , steel, steel        , EPDM        , steel, steel       , EPDM
+bridge_fraction  , 0.05
+EOD
+comment          ,================== roofs =====================================
+short_name       , BUR/concrete_deck
+long_name        , Built Up Roof /concrete deck
+main_thickness   , 0.026
+bridge_thickness , 0.026
+main_material    , shingle_asph , roof_felt , insul_slab , insul_slab , insul_slab , conc_aerated, conc_aerated, conc_aerated, conc_aerated, conc_aerated 
+bridge_material  , shingle_asph , roof_felt , insul_slab , insul_slab , insul_slab , conc_aerated, conc_aerated, conc_aerated, conc_aerated, conc_aerated 
+bridge_fraction  , 0
+EOD
+short_name       , BUR/wood_deck
+long_name        , Built Up Roof /wood deck
+main_thickness   , 0.0149
+bridge_thickness , 0.0149
+main_material    , gravel_BUR   , bitumen_felt , insul_slab , insul_slab , insul_slab , insul_slab , insul_slab , insul_slab , insul_slab , plywood_roof 
+bridge_material  , gravel_BUR   , bitumen_felt , insul_slab , insul_slab , insul_slab , insul_slab , insul_slab , insul_slab , insul_slab , plywood_roof 
+bridge_fraction  , 0
+EOD
+short_name       , PVC/steel_deck   
+long_name        , PVC/steel deck  
+main_thickness   , 0.0117
+bridge_thickness , 0.0117
+main_material    , EPS     , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , air    , steel  
+bridge_material  , EPS     , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , air    , steel  
+bridge_fraction  , 0
+EOD
+short_name       , EPDM/steel_deck   
+long_name        , EPDM/steel deck  
+main_thickness   , 0.0117
+bridge_thickness , 0.0117
+main_material    , EPDM    , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , air    , steel 
+bridge_material  , EPDM    , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , air    , steel 
+bridge_fraction  , 0
+EOD
+short_name       , galv_steel/metal_joists
+long_name        , galv steel/metal bar joists
+main_thickness   , 0.0118
+bridge_thickness , 0.0118
+main_material    , zinteel , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , air    , steel
+bridge_material  , zinteel , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , insul_wool , air    , steel
+bridge_fraction  , 0
+EOD
+short_name       , corrugated_metal
+long_name        , corrugated metal (iron/tin)
+main_thickness   , 0.0002
+bridge_thickness , 0.0002
+main_material    , corrugate , corrugate , corrugate , corrugate , corrugate , corrugate , corrugate , corrugate , corrugate , corrugate 
+bridge_material  , corrugate , corrugate , corrugate , corrugate , corrugate , corrugate , corrugate , corrugate , corrugate , corrugate 
+bridge_fraction  , 0
+EOD
+short_name       , shingles/wood_deck
+long_name        , shingles/wood deck
+main_thickness   , 0.0142
+bridge_thickness , 0.0142
+main_material    , shingle_asph , plywood_roof , plywood_roof , air  , air  , air  , insul_wool , insul_wool , insul_wool , drywall_int 
+bridge_material  , shingle_asph , plywood_roof , plywood_roof , air  , air  , air  , insul_wool , insul_wool , insul_wool , drywall_int 
+bridge_fraction  , 0
+EOD
+short_name       , ceramic_tile/wood_deck
+long_name        , ceramic tile/wood deck
+main_thickness   , 0.0147
+bridge_thickness , 0.0147
+main_material    , ceramic_tile , air, plywood_roof , air  , air  , air, insul_wool , insul_wool , insul_wool , drywall_int  
+bridge_material  , ceramic_tile , air, plywood_roof , air  , air  , air, insul_wool , insul_wool , insul_wool , drywall_int  
+bridge_fraction  , 0
+EOD
+short_name       , thatch
+long_name        , thatch
+main_thickness   , 0.018
+bridge_thickness , 0.018
+main_material    , thatch,thatch,thatch,thatch,thatch,thatch,thatch,thatch,thatch,timber 
+bridge_material  , thatch,thatch,thatch,thatch,thatch,thatch,thatch,thatch,thatch,timber 
+bridge_fraction  , 0
+EOD
+short_name       , slate_tile/wood_deck
+long_name        , slate tile/wood deck
+main_thickness   , 0.0144
+bridge_thickness , 0.0144
+main_material    , slate, air, plywood_roof , air  , air  , air, insul_wool , insul_wool , insul_wool , drywall_int  
+bridge_material  , slate, air, plywood_roof , air  , air  , air, insul_wool , insul_wool , insul_wool , drywall_int 
+bridge_fraction  , 0
+EOD
+short_name       , metal_tile/wood_deck
+long_name        , metal tile/wood deck
+main_thickness   , 0.005
+bridge_thickness , 0.005
+main_material    , steel , plywood_roof , plywood_roof , plywood_roof , air  , insul_wool , insul_wool , insul_wool , insul_wool , drywall_int  
+bridge_material  , steel , plywood_roof , plywood_roof , plywood_roof , air  , insul_wool , insul_wool , insul_wool , insul_wool , drywall_int  
+bridge_fraction  , 0
+EOD
+short_name       , mud_roof              
+long_name        ,"mud or adobe roof"
+main_thickness   , 0.005
+bridge_thickness , 0.005
+main_material    , mud  , mud  , mud  , mud  , mud  , mud  , mud  , mud  , mud  , corrugate  
+bridge_material  , mud  , mud  , mud  , mud  , mud  , mud  , mud  , mud  , mud  , corrugate  
+bridge_fraction  , 0
+EOD
+short_name       , tropical_tile/wood_deck
+long_name        , tropical tile/wood deck
+main_thickness   , 0.0082
+bridge_thickness , 0.0082
+main_material    , ceramic_tile , ceramic_tile , air , air , air , air , air ,plywood_roof , plywood_roof , plywood_roof  
+bridge_material  , ceramic_tile , ceramic_tile , air , air , air , air , air ,plywood_roof , plywood_roof , plywood_roof  
+bridge_fraction  , 0
+EOD
+comment          ,================== roads =====================================
+comment          , unspecified thickness is assigned by CLM at runtime
+short_name       , concrete_road
+long_name        , concrete road
+main_thickness   , -999
+bridge_thickness , -999
+main_material    , conc_cast , asph_conc_road , aggregate
+bridge_material  , conc_cast , asph_conc_road , aggregate
+bridge_fraction  , 0
+EOD
+short_name       , asphalt_road/stabilized
+long_name        , asphalt road with stabilized sub-base
+main_thickness   , -999
+bridge_thickness , -999
+main_material    , asph_stab_road , conc_stab_road
+bridge_material  , asph_stab_road , conc_stab_road
+bridge_fraction  , 0
+EOD
+short_name       , asphalt_road/simple
+long_name        , asphalt road (blacktop tar & chip)
+main_thickness   , -999
+bridge_thickness , -999
+main_material    , asph_simp_road , aggregate
+bridge_material  , asph_simp_road , aggregate
+bridge_fraction  , 0
+EOD
+short_name       , dirt_improved
+long_name        , dirt improved
+main_thickness   , -999
+bridge_thickness , -999
+main_material    , aggregate, aggregate
+bridge_material  , aggregate, aggregate
+bridge_fraction  , 0
+EOD
+short_name       , dirt_unimproved
+long_name        , dirt unimproved
+main_thickness   , -999
+bridge_thickness , -999
+main_material    , soil_road
+bridge_material  , soil_road
+bridge_fraction  , 0
+EOD
+EOF
+================================================================================
+Urban Properties -- laminant specifications
+================================================================================
+SVN $Id: lam_spec.csv 201 2017-08-08 23:07:49Z kauff $
+SVN $URL: https://svn-iam-thesis.cgd.ucar.edu/urban_properties/trunk_tags/urban_properties_180622/src/lam_spec.csv $
+================================================================================

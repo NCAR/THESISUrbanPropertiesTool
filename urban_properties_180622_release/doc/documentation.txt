@@ -1,0 +1,125 @@
+#=========================================================================================
+# SVN $Id: documentation.txt 232 2018-06-22 20:41:15Z kauff $
+# SVN $URL: https://svn-iam-thesis.cgd.ucar.edu/urban_properties/trunk_tags/urban_properties_180622/doc/documentation.txt $
+#=========================================================================================
+
+THESIS Urban Properties Tool
+
+(1) Creates urban morphological, thermal, and radiative properties for use in CLM (CESM's Community Land Model component)
+
+In general, this tool is required to create the urban properties data required as input to CESM's Community Land Model (CLM) component.  CLM requires urban properties for three city types in each of 33 regions.  The properties include data such as the percentage of area covered by buildings, building height, roof and wall thermal conductivity, and the emissivity and albedo of walls, windows, roofs, and roads.  As these are standard urban properties, this tool may be useful for other urban models as well.
+
+(2) General description
+
+This tool works by referencing a file containing the thermal properties of individual materials (eg. the thermal conductivity, heat capacity, emmissivity, and albedo of air, concrete, and wood), and then referencing files specifying how such materials are combined to construct walls, windows, roofs, and roads, from which the thermal properties of various types of walls, windows, roofs, and roads are computed.  Finally the code references files that describes, for four city types (only three of which are currently used by CLM) in each of 33 regions, the geometric shape of buildings and the types of walls, windows, roofs, and roads used.
+
+(3). Specific features
+
+(3.1)  Code description (urban_properties_180622_release/src)
+
+This tool consists of several NCAR Command Language (NCL) scripts that are run in sequence.  A command line tcsh driver script is used to run the NCL scripts in proper order, although a user could also run an individual NCL script on the command line -- this could be useful for, eg., manually altering input/output data to get material properties for use by CLM that are not based on the normal physics equations at play.
+
+The ncl scripts are:
+(*) gen_lam.ncl - computes the physical properties of laminates (e.g., a wall made up of layers of wood, insulation, and drywall, or a window made up of glass and frame material)
+(*) gen_city.ncl - computes the physical properties of various city types
+(*) gen_region.ncl - selects city types for use in each of the 33 regions used within CLM
+(*) gen_data_1km.ncl - puts region data onto a 1km global grid
+(*) gen_data_05deg.ncl - puts 1km data onto a 0.05 degree grid
+(*) gen_data_clm.ncl - creates a maximum building temperature streams file for CLM
+
+The tcsh driver script is urban_prop.csh -- this script will run the ncl scripts in proper order.  It requires no input on the command line -- the ncl scripts do require input files, files that are included with the source code via the git clone (see below). The output is a global urban properties dataset at 0.05° latitude by longitude in NetCDF format suitable for ingestion by the CLM mksurfdata_map tool (https://escomp.github.io/ctsm-docs/versions/release-clm5.0/html/users_guide/using-clm-tools/index.html).  The mksurfdata_map tool creates a CLM surface dataset at the desired climate model resolution.
+
+Important note: the tcsh driver script runs all the ncl scripts *except* the final script, gen_data_clm.ncl.  The original idea was for the driver to execute all scripts, including the gen_data_clm.ncl script, but it turns out that the final script requires input files that are not feasible to create with this software bundle.   To create the input data files necessary for the final step requires software that is bundled with the CLM/CESM software package (the CLM mksurfdata_map tool - https://escomp.github.io/ctsm-docs/versions/release-clm5.0/html/users_guide/using-clm-tools/index.html).  The gen_data_clm.ncl script can be run separately after the mksurfdata_map tool creates the CLM surface dataset.
+
+(3.2)  Inputs and Outputs
+
+Note: 
+o the first three ncl script have input and output files that are human-readable comma separated value (csv) text files.
+o the fourth ncl script has a csv input file and outputs a netCDF file
+o the final two ncl script have input and output files that are netCDF files
+o all output files will have a unique time-stamp (yymmdd-hhmmss) as part of the file name
+
+(3.2.1) gen_lam.ncl - create properties of simple laminates (roofs, walls)
+    input:  mat_prop.csv            (comes with git clone)
+    input:  lam_spec.csv            (comes with git clone)
+    output: lam_prop.yymmdd-hhmmss.csv
+    example output provided here: lam_prop..191226-201120.csv
+(3.2.2) gen_city.ncl - create properties for various city types
+    input:  lam_prop.yymmdd-hhmmss.csv    (created by running previous .ncl script)
+    input:  city_spec.csv           (comes with git clone)
+    output: city_prop.yymmdd-hhmmss.csv 
+    example output provided here: city_prop.191226-201120.csv
+(3.2.3) gen_region.ncl - assign city types to the 33 CLM regions
+    input:  city_prop.yymmdd-hhmmss.csv    (created by running previous .ncl script)
+    input:  region_spec.csv         (comes with git clone)
+    output: region_prop.yymmdd-hhmmss.csv
+    example output provided here: region_prop.191226-201120.csv
+(3.2.4) gen_data_1km.ncl - puts region data onto a 1km global grid
+    input:  region_prop.yymmdd-hhmmss.csv  (created by running previous ncl scripts)
+    output: urban_properties_data.1km.yymmdd-hhmmss.nc
+(3.2.5) gen_data_05deg.ncl - puts 1km data onto a 0.05 degree grid
+    input: urban_properties_data.1km.yymmdd-hhmmss.nc (created by running previous ncl script)
+    output: urban_properties_data.05deg.yymmdd-hhmmss.nc
+(3.2.6) gen_data_clm.ncl - creates a maximum building temperature streams file for CLM
+    See urban_properties_180622_release/src/README.txt for more details on how to run this NCL routine after your surface dataset has
+    been created.
+    input: CLM50_template_c160923.nc
+    example input provided here (replace this with your own data created from running urban_prop.csh and creating your own surface dataset: 
+        surfdata_0.9x1.25_16pfts_Irrig_CMIP6_simyr1850_Control_c181017.nc
+    output: whatever you set as "output_fn_clm" in gen_data.nml
+    example output provided here: CLM50_tbuildmax_Oleson_2016_0.9x1.25_simyr1849-2106_c191226.nc
+
+The input files that come with a git clone:
+
+(*) mat_prop.csv
+    Defines basic material types (eg "ceramic_tile") and their thermal properties (e.g., albedo)
+(*) lam_spec.csv
+    Specifies how to combine basic materials to create "laminates" 
+    E.g., create a laminate called "glass_2r_w" consisting of double-pane window in a wood frame
+(*) city_spec.csv
+    Specifies how to create "city types" by specifying, e.g., the fraction of area occupied by buildings, building height, and the types of walls, windows, and roofs that the buildings are made out of
+(*) region_spec.csv
+    Specifies what city types are assigned to each of the 33 regions used in CLM
+(*) gen_data.nml
+    Specifies a variety of netCDF input files that are necessary to create 1km and 1/2 degree gridded netCDF data files, as well as the building temperature streams file.
+
+The output files that are created by running this code:
+
+(*) lam_prop.yymmdd-hhmmss.csv
+    Contains the thermal properties of the laminates created in (3.2.1)
+(*) city_prop.yymmdd-hhmmss.csv 
+    Contains the thermal properties of the city types created in (3.2.2)
+(*) region_prop.yymmdd-hhmmss.csv
+    Contains the thermal properties of the city types assigned to each region created in (3.2.3)
+(*) urban_properties_data.1km.yymmdd-hhmmss.nc
+    Contains the thermal properties of the region types and urban extent put on a 1km global grid created in (3.2.4)
+(*) urban_properties_data.05deg.yymmdd-hhmmss.nc
+    Contains the thermal properties and urban extent regridded onto a 0.05 degree global grid created in (3.2.5)
+(*) CLM50_tbuildmax_Oleson_2016_0.9x1.25_simyr1849-2106_c191226.nc
+    Contains maximum building temperature data created in (3.2.6)
+
+
+(3.3) Running the Tool
+
+Use the github repository to clone a version of the code:
+git clone https://github.com/olyson/THESISUrbanPropertiesTool ./THESISUrbanPropertiesTool
+The code requires that tcsh and NCL are available.
+
+The gen_data.nml file contains the namelist for the datasets and filenames needed to run the driver script, urban_prop.csh, and eventually gen_data_clm.ncl.  This is setup by default to use datasets and filenames that correspond to the urban properties dataset described in Oleson and Feddema (2019). These are available from the author in the DATA directory (see the README.md on the repository).
+
+The code is executed by running the driver script, urban_prop.csh, on the command line.  Alternately the user can run the ncl scripts manually on the command line -- looking into the urban_prop.csh shell script illustrates how to do this.
+
+Running this code "out-of-the-box" (i.e. git clone without modification) creates the urban properties dataset described in Oleson and Feddema (2019).  The user can modify the mat_prop.csv file or any of the *_spec_*.csv file to create non-standard urban properties data for use in non-standard CESM experiments.  Modifying a file used in one step can alter the output of all subsequent steps.  Here are some examples:
+
+(example 1) in mat_prop.csv (which specifies basic material properties), one could change the thermal conductivity of insulated wool, which then would cause a change in the properties of any roof or wall that contains insulated wool, and also cause a change the properties of any city type that uses buildings made of roofs or walls that contain insulated wool.
+
+(example 2) the file city_spec.csv (which defines a city-type), could be edited to introduce/define/specify a new city type.  This change alone would not change the end result, unless the file region_spec.csv (which assigns city types to regions) was also edited to specify that some world region actually used the new city type.
+
+(example 3) see urban_properties_180622_release/src/Scenarios_Feddema_2017/Scenario_1_Roof_Albedo for an example of a roof albedo modification experiment
+
+After running urban_prop.csh successfully, create your surface dataset following instructions for the CLM5 mksurfdata_map tool in the CLM5 User's Guide (https://escomp.github.io/ctsm-docs/versions/release-clm5.0/html/users_guide/using-clm-tools/index.html). Use the 0.05x0.05 urban "raw" surface dataset you created in (3.2.5) as input to this (urban_properties_data.05deg.yymmdd-hhmmss.nc).
+
+Then create a building temperature streams file using the surface dataset as specified in gen_data.nml, and using gen_data_clm.ncl following instructions in urban_properties_180622_release/src/README.txt.  The building temperature streams file is used by the CLM namelist (lnd_in), e.g., the default for CLM5 is: stream_fldfilename_urbantv = '/glade/p/cesmdata/cseg/inputdata/lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1.25_simyr1849-2106_c160923.nc'. The new Oleson and Feddema (2019) file is stream_fldfilename_urbantv = '/glade/p/cesmdata/cseg/inputdata/lnd/clm2/urbandata/CLM50_tbuildmax_Oleson_2016_0.9x1.25_simyr1849-2106_c181017.nc'
+
+Additional information for this process can be found here:
+Oleson, K.W., and J. Feddema, 2019: Parameterization and surface data improvements and new capabilities for the Community Land Model Urban (CLMU), JAMES, 11, doi:10.1029/2018MS001586.
