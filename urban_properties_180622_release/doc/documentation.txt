@@ -102,7 +102,7 @@ The output files that are created by running this code:
 (3.3) Running the Tool
 
 Use the github repository to clone a version of the code:
-git clone https://github.com/olyson/THESISUrbanPropertiesTool ./THESISUrbanPropertiesTool
+git clone https://github.com/NCAR/THESISUrbanPropertiesTool ./THESISUrbanPropertiesTool
 The code requires that tcsh and NCL are available.
 
 The gen_data.nml file contains the namelist for the datasets and filenames needed to run the driver script, urban_prop.csh, and eventually gen_data_clm.ncl.  This is setup by default to use datasets and filenames that correspond to the urban properties dataset described in Oleson and Feddema (2019). These are available from the author in the DATA directory (see the README.md on the repository).
