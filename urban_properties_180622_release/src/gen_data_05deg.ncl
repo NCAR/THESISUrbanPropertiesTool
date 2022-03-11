@@ -122,7 +122,7 @@ print(subName+"-----------------------------------------------------------------
  landmask = in_file->LANDMASK
  lat = in_file->LAT
  lon = in_file->LON
- dens_class = in_file->URBAN_DENSITY_CLASS
+ urban_fraction = in_file->URBAN_FRACTION
  region_id = in_file->REGION_ID
  canyon_hwr = in_file->CANYON_HWR
  wtlunit_roof = in_file->WTLUNIT_ROOF
@@ -225,7 +225,7 @@ print(subName+"-----------------------------------------------------------------
      ;--- extract associated 1km cells ----
      landmask1d   = ndtooned(landmask(bot:top,lef:rig))
      region_id1d  = ndtooned(region_id(bot:top,lef:rig))
-     dens_class1d = ndtooned(dens_class(bot:top,lef:rig))
+     urban_fractionsub = urban_fraction(bot:top,lef:rig,:)
 
      ;--- get number and indices of unmasked 1km cells ---
      indx         = ind(landmask1d .eq. 1b)  ; ? should be (lndmask1d .ne. 0b)
@@ -235,12 +235,12 @@ print(subName+"-----------------------------------------------------------------
      if (.not.(all(ismissing(indx)))) then
        landmask_tmp(j,i) = 1b ; non-zero <=> land exists in this cell
 
-       num_tbd = int2dble(num(dens_class1d(indx) .eq. 1b))
-       num_hd  = int2dble(num(dens_class1d(indx) .eq. 2b))
-       num_md  = int2dble(num(dens_class1d(indx) .eq. 3b))
-       pct_urban_tmp(0,j,i) = (num_tbd/num_valid)*100.d
-       pct_urban_tmp(1,j,i) = (num_hd/num_valid)*100.d
-       pct_urban_tmp(2,j,i) = (num_md/num_valid)*100.d
+       ;num_tbd = int2dble(num(dens_class1d(indx) .eq. 1b))
+       ;num_hd  = int2dble(num(dens_class1d(indx) .eq. 2b))
+       ;num_md  = int2dble(num(dens_class1d(indx) .eq. 3b))
+       pct_urban_tmp(0,j,i) = avg(urban_fractionsub(:,:,0))*100.d
+       pct_urban_tmp(1,j,i) = avg(urban_fractionsub(:,:,1))*100.d
+       pct_urban_tmp(2,j,i) = avg(urban_fractionsub(:,:,2))*100.d
 
        if (dimsizes(indx) .gt. 2) then ; > 2 input cells: use region ID that occurs most often
          tmp = pdfx(region_id1d(indx),33,opt)
