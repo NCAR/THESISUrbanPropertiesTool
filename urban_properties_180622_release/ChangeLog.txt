@@ -2,6 +2,20 @@
 SVN $Id: ChangeLog.txt 234 2018-06-22 21:02:03Z kauff $
 SVN $URL: https://svn-iam-thesis.cgd.ucar.edu/urban_properties/trunk_tags/urban_properties_180622/ChangeLog.txt $
 ==========================================================================================
+Originator: keerzhang, Face2sea, fang-bowen, olyson
+Date: 2022 March 25
+Model: urban_properties
+Version: urban_properties_180622
+One-line summary: add capability for non-binary 1km urban data (PR#1)
+Changes made:
+
+This update includes code changes that enable the THESIS tool to use both binary and non-binary
+1 km urban data to generate the 0.05 deg urban property data. The urban land cover for three 
+density classes are saved as floating numbers instead of integers.  Besides the necessary 
+changes to enable non-binary urban input, some large variables when they are no longer needed to optimize memory use.
+
+==========================================================================================
+
 Originator: kauff
 Date: 2018 June 22
 Model: urban_properties

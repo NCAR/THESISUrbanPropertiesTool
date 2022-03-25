@@ -1024,20 +1024,20 @@ print(subName+"-----------------------------------------------------------------
  lon_hr = urban_tbd_file->lon
  nlon_hr = dimsizes(lon_hr)
 
- tmp = new((/tmpnlat_hr,nlon_hr,num_urban_types/),"integer")
- tmp(:,:,0) = floattointeger(short2flt(urban_tbd_file->tbd))
+ tmp = new((/num_urban_types,tmpnlat_hr,nlon_hr/),"float")
+ tmp(0,:,:) = tofloat(urban_tbd_file->tbd)
 
  fn = input_dir + urban_hd_fn
  print(subName+"addfile "+fn)
  urban_hd_file = addfile(fn,"r")
 ;urban_hd_file = addfile("/glade/p/cgd/tss/people/oleson/urban_sfcdata/Feddema_urban_data_080410/HIGH_RES_VERSION2/high_dens_1km.nc","r")
- tmp(:,:,1) = floattointeger(short2flt(urban_hd_file->hd))
+ tmp(1,:,:) = tofloat(urban_hd_file->hd)
 
  fn = input_dir + urban_md_fn
  print(subName+"addfile "+fn)
  urban_md_file = addfile(fn,"r")
 ;urban_md_file = addfile("/glade/p/cgd/tss/people/oleson/urban_sfcdata/Feddema_urban_data_080410/HIGH_RES_VERSION2/med_dens_1km.nc","r")
- tmp(:,:,2) = floattointeger(short2flt(urban_md_file->md))
+ tmp(2,:,:) = tofloat(urban_md_file->md)
 
 ; Files are not global, so fill out full arrays
 ; And they are north to south, so reverse to south to north
@@ -1050,17 +1050,17 @@ print(subName+"-----------------------------------------------------------------
  lat_hr!0 = "lat"
  lat_hr&lat = lat_hr
 
- pct_urban_hr = new((/nlat_hr,nlon_hr,num_urban_types/),"integer")
- pct_urban_hr(0:tmpnlat_hr-1,:,:) = tmp(::-1,:,:)
- pct_urban_hr!0 = "lat"
+ pct_urban_hr = new((/num_urban_types,nlat_hr,nlon_hr/),"float")
+ pct_urban_hr(:,0:tmpnlat_hr-1,:) = tmp(:,::-1,:)
+ pct_urban_hr!0 = "density_class"
+ pct_urban_hr!1 = "lat"
  pct_urban_hr&lat = lat_hr
- pct_urban_hr!1 = "lon"
+ pct_urban_hr!2 = "lon"
  pct_urban_hr&lon = lon_hr
- pct_urban_hr!2 = "density type"
 ;print(dimsizes(ind(ndtooned(pct_urban_hr(:,:,0)) .eq. 1)))
 
 ; Create a landmask from one of the density classes
- landmask = doubletobyte(where(ismissing(pct_urban_hr(:,:,0)),0,1))
+ landmask = doubletobyte(where(ismissing(pct_urban_hr(0,:,:)),0,1))
  landmask!0 = "lat"
  landmask&lat = lat_hr
  landmask!1 = "lon"
@@ -1070,25 +1070,13 @@ print(subName+"-----------------------------------------------------------------
  landmask@units = "unitless"
 
  pct_urban_hr = where(ismissing(pct_urban_hr),0,pct_urban_hr)
+ pct_urban_hr= lonFlip(pct_urban_hr)
 ;print(dimsizes(ind(ndtooned(pct_urban_hr(:,:,0)) .eq. 1)))
 
  delete(pct_urban_hr@_FillValue)
  delete(tmp)
  delete(tmpnlat_hr)
  delete(tmplat_hr)
-
- dens_class = where(pct_urban_hr(:,:,0) .eq. 1,1,0)
- dens_class = where(pct_urban_hr(:,:,1) .eq. 1,2,dens_class)
- dens_class = where(pct_urban_hr(:,:,2) .eq. 1,3,dens_class)
- dens_class!0 = "lat"
- dens_class&lat = lat_hr
- dens_class!1 = "lon"
- dens_class&lon = lon_hr
- dens_class@long_name = "Urban Density Class"
- dens_class@units = "1-TBD, 2-HD, 3-MD"
-
- dens_class_hr = lonFlip(dens_class)
- print((/"Done creating dens_class"/))
 
 print(subName+"-----------------------------------------------------------------")
 print(subName+systemfunc("date")+ " Get urban regions data")
@@ -1102,7 +1090,7 @@ print(subName+"-----------------------------------------------------------------
  print(subName+"addfile "+fn)
  regions_file = addfile(fn,"r")
  tmp = (/regions_file->reg_shift/)
- region_id = tmp(::-1,:)
+ region_id =tmp(::-1,:)
  region_id!0 = "lat"
  region_id&lat = lat_hr
  region_id!1 = "lon"
@@ -1114,9 +1102,10 @@ print(subName+"-----------------------------------------------------------------
  region_id_hr = lonFlip(region_id)
  print((/"Done creating region_id"/))
  delete(tmp)
+ delete(region_id)
 
  ; This sum should be no greater than 100
- pct_urban_hr_all = pct_urban_hr(:,:,0) + pct_urban_hr(:,:,1) + pct_urban_hr(:,:,2)
+ pct_urban_hr_all = pct_urban_hr(0,:,:) + pct_urban_hr(1,:,:) + pct_urban_hr(2,:,:)
  indx = ind(ndtooned(pct_urban_hr_all) .gt. 1)
  if (.not.(all(ismissing(indx)))) then
    print((/"Number of points with multiple density types: "+dimsizes(index)/))
@@ -1126,6 +1115,7 @@ print(subName+"-----------------------------------------------------------------
  end if
  print((/"Done checking urban density types"/))
  delete(indx)
+ delete(pct_urban_hr_all)
 
  lon_hr = lonFlip(lon_hr)
  lon_hr = (/lon_hr&lon/)
@@ -1543,11 +1533,16 @@ print(subName+"-----------------------------------------------------------------
  longxy_out@long_name = "longitude-2d"
  longxy_out@units = "degrees east"
 
- dens_class_out = integertobyte((/dens_class_hr/))
- dens_class_out!0 = "lat"
- dens_class_out!1 = "lon"
- dens_class_out@long_name = "Urban Density Class"
- dens_class_out@units = "1-TBD, 2-HD, 3-MD"
+ urban_fraction_out = (/pct_urban_hr/)
+ urban_fraction_out!0 = "density_class"
+ urban_fraction_out!1 = "lat"
+ urban_fraction_out!2 = "lon" 
+ urban_fraction_out@long_name = "Percent urban for three classes"
+ urban_fraction_out@units = "unitless"
+ delete(pct_urban_hr)
+ delete(latixy)
+ delete(longxy)
+; delete(urban_fraction_out@_FillValue)
 ;print(dimsizes(ind(ndtooned(dens_class_out) .eq. 1)))
 ;print(dimsizes(ind(ndtooned(dens_class_out) .eq. 2)))
 ;print(dimsizes(ind(ndtooned(dens_class_out) .eq. 3)))
@@ -1558,12 +1553,12 @@ print(subName+"-----------------------------------------------------------------
  region_id_out!1 = "lon"
  region_id_out@long_name = "Region ID"
  region_id_out@units = "unitless"
-
+ delete(region_id_hr)
+ delete(landmask)
  delete(fAtt)
  delete(dimNames)
  delete(dimSizes)
  delete(dimUnlim)
-
 print(subName+"-----------------------------------------------------------------")
 print(subName+systemfunc("date") + " create output file " + output_fn_1km)
 ;rint(subName+                     " create output file " + output_fn_1km)
@@ -1595,7 +1590,7 @@ fn = output_dir + output_fn_1km
  filevardef(out_file, "LON", typeof(lon_out), getvardims(lon_out))
  filevardef(out_file, "LATIXY", typeof(latixy_out), getvardims(latixy_out))
  filevardef(out_file, "LONGXY", typeof(longxy_out), getvardims(longxy_out))
- filevardef(out_file, "URBAN_DENSITY_CLASS", typeof(dens_class_out), getvardims(dens_class_out))
+ filevardef(out_file, "URBAN_FRACTION", typeof(urban_fraction_out), getvardims(urban_fraction_out))
  filevardef(out_file, "REGION_ID", typeof(region_id_out), getvardims(region_id_out))
  filevardef(out_file, "CANYON_HWR", typeof(canyon_hwr_hr), getvardims(canyon_hwr_hr))
  filevardef(out_file, "WTLUNIT_ROOF", typeof(wtlunit_roof_hr), getvardims(wtlunit_roof_hr))
@@ -1627,7 +1622,7 @@ fn = output_dir + output_fn_1km
  filevarattdef(out_file, "LON", lon_out)
  filevarattdef(out_file, "LATIXY", latixy_out)
  filevarattdef(out_file, "LONGXY", longxy_out)
- filevarattdef(out_file, "URBAN_DENSITY_CLASS", dens_class_out)
+ filevarattdef(out_file, "URBAN_FRACTION", urban_fraction_out)
  filevarattdef(out_file, "REGION_ID", region_id_out)
  filevarattdef(out_file, "CANYON_HWR", canyon_hwr_hr)
  filevarattdef(out_file, "WTLUNIT_ROOF", wtlunit_roof_hr)
@@ -1661,7 +1656,7 @@ fn = output_dir + output_fn_1km
  out_file->LON = (/lon_out/)
  out_file->LATIXY = (/latixy_out/)
  out_file->LONGXY = (/longxy_out/)
- out_file->URBAN_DENSITY_CLASS = (/dens_class_out/)
+ out_file->URBAN_FRACTION = (/urban_fraction_out/)
  out_file->REGION_ID = (/region_id_out/)
  out_file->CANYON_HWR = (/canyon_hwr_hr/)
  out_file->WTLUNIT_ROOF = (/wtlunit_roof_hr/)
