@@ -227,9 +227,9 @@ print(subName+"-----------------------------------------------------------------
      region_id1d  = ndtooned(region_id(bot:top,lef:rig))
      urban_fractionsub = urban_fraction(:,bot:top,lef:rig)
 
-     ;--- get number and indices of unmasked 1km cells ---
+     ;--- get indices of unmasked 1km cells ---
      indx         = ind(landmask1d .eq. 1b)  ; ? should be (lndmask1d .ne. 0b)
-     num_valid    = num(landmask1d .eq. 1b)  ; ? should be (lndmask1d .ne. 0b)
+     ;num_valid    = num(landmask1d .eq. 1b)  ; ? should be (lndmask1d .ne. 0b)
 
      ;--- aggregate 1km data to 0.05degree grid ----
      if (.not.(all(ismissing(indx)))) then
@@ -238,9 +238,10 @@ print(subName+"-----------------------------------------------------------------
        ;num_tbd = int2dble(num(dens_class1d(indx) .eq. 1b))
        ;num_hd  = int2dble(num(dens_class1d(indx) .eq. 2b))
        ;num_md  = int2dble(num(dens_class1d(indx) .eq. 3b))
-       pct_urban_tmp(0,j,i) = sum(urban_fractionsub(0,:,:))*100.d/num_valid ; only average over land grids
-       pct_urban_tmp(1,j,i) = sum(urban_fractionsub(1,:,:))*100.d/num_valid
-       pct_urban_tmp(2,j,i) = sum(urban_fractionsub(2,:,:))*100.d/num_valid
+       
+       pct_urban_tmp(0,j,i) = ave(urban_fractionsub(0,:,:))*100.d; average over the total grid area 
+       pct_urban_tmp(1,j,i) = ave(urban_fractionsub(1,:,:))*100.d; instead of the land area
+       pct_urban_tmp(2,j,i) = ave(urban_fractionsub(2,:,:))*100.d
 
        if (dimsizes(indx) .gt. 2) then ; > 2 input cells: use region ID that occurs most often
          tmp = pdfx(region_id1d(indx),33,opt)
