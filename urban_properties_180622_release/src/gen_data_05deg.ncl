@@ -195,8 +195,8 @@ print(subName+"-----------------------------------------------------------------
  print(subName+"create 0.05 data arrays")
 
  pct_urban_tmp = new((/num_urban_types,nlat_out,nlon_out/),"double")
- region_id_tmp = new((/nlat_out,nlon_out/),"byte")
- landmask_tmp  = new((/nlat_out,nlon_out/),"byte")
+ region_id_tmp = new((/nlat_out,nlon_out/),"integer")
+ landmask_tmp  = new((/nlat_out,nlon_out/),"integer")
 
  wks = gsn_open_wks("ps","dummy")
  gsn_define_colormap(wks,"BlueRed")
@@ -227,34 +227,35 @@ print(subName+"-----------------------------------------------------------------
      region_id1d  = ndtooned(region_id(bot:top,lef:rig))
      urban_fractionsub = urban_fraction(:,bot:top,lef:rig)
 
-     ;--- get number and indices of unmasked 1km cells ---
-     indx         = ind(landmask1d .eq. 1b)  ; ? should be (lndmask1d .ne. 0b)
-     num_valid    = num(landmask1d .eq. 1b)  ; ? should be (lndmask1d .ne. 0b)
+     ;--- get indices of unmasked 1km cells ---
+     indx         = ind(landmask1d .eq. 1)  ; ? should be (lndmask1d .ne. 0b)
+     ;num_valid    = num(landmask1d .eq. 1)  ; ? should be (lndmask1d .ne. 0b)
 
      ;--- aggregate 1km data to 0.05degree grid ----
      if (.not.(all(ismissing(indx)))) then
-       landmask_tmp(j,i) = 1b ; non-zero <=> land exists in this cell
+       landmask_tmp(j,i) = 1 ; non-zero <=> land exists in this cell
 
        ;num_tbd = int2dble(num(dens_class1d(indx) .eq. 1b))
        ;num_hd  = int2dble(num(dens_class1d(indx) .eq. 2b))
        ;num_md  = int2dble(num(dens_class1d(indx) .eq. 3b))
-       pct_urban_tmp(0,j,i) = sum(urban_fractionsub(0,:,:))*100.d/num_valid ; only average over land grids
-       pct_urban_tmp(1,j,i) = sum(urban_fractionsub(1,:,:))*100.d/num_valid
-       pct_urban_tmp(2,j,i) = sum(urban_fractionsub(2,:,:))*100.d/num_valid
+       
+       pct_urban_tmp(0,j,i) = avg(urban_fractionsub(0,:,:))*100.d; average over the total grid area 
+       pct_urban_tmp(1,j,i) = avg(urban_fractionsub(1,:,:))*100.d; instead of the land area
+       pct_urban_tmp(2,j,i) = avg(urban_fractionsub(2,:,:))*100.d
 
        if (dimsizes(indx) .gt. 2) then ; > 2 input cells: use region ID that occurs most often
          tmp = pdfx(region_id1d(indx),33,opt)
-         maxindx = integertobyte(maxind(tmp))
-         region_id_tmp(j,i) = maxindx + 1b
+         maxindx = maxind(tmp)
+         region_id_tmp(j,i) = maxindx + 1
          delete(tmp)
          delete(maxindx)
        else
          region_id_tmp(j,i) = region_id1d(indx(0)) ; 1 or 2 input cells: use region ID of first cell
        end if
      else
-       landmask_tmp(j,i) = 0b
+       landmask_tmp(j,i) = 0
        pct_urban_tmp(:,j,i) = 0.d
-       region_id_tmp(j,i) = 0b
+       region_id_tmp(j,i) = 0
      end if
      lef = rig + 1
      rig = lef + x_scale - 1
