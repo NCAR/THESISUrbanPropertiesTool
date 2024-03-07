@@ -3,4 +3,4 @@
 
 > Oleson, K.W., and J. Feddema, 2019: Parameterization and surface data improvements and new capabilities for the Community Land Model Urban (CLMU), JAMES, 11, doi:10.1029/2018MS001586.
 
-> Note the repository here contains scripts, code, and small files, but not the main netcdf input files because they are too large to hold in this repository.  These files are now available on DASH (https://dashrepo.ucar.edu/dataset/188a_oleson.html). Contact Keith Oleson (oleson at ucar dot edu) if you have questions.
+> Note the repository here contains scripts, code, and small files, but not the main netcdf input files because they are too large to hold in this repository.  These files are now available on DASH (https://data.ucar.edu/dataset/thesis-tools-datasets-urban-properties-tool1). Contact Keith Oleson (oleson at ucar dot edu) if you have questions.
