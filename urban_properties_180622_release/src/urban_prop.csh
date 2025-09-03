@@ -7,6 +7,14 @@
 #===============================================================================
 # set echo ON
 
+# Set avg_landgcells = True if you want to only average over 1km LAND gridcells instead of all gridcells
+# to produce the 0.05deg data. This reproduces  the Oleson and Feddema (2010) data (the optional
+# surface dataset) for all fields except for PCT_URBAN where the max differences there are only
+#     1.4210854715202e-14
+#     -1.4210854715202e-14
+# Set avg_landgcells = False otherwise. This method was implemented in ctsm5.2 mksurfdata_esmf.
+
+setenv avg_landgcells True
 set LID = "`date +%y%m%d-%H%M%S`"
 set SHORTLINE = "####################"
 set LINE = "$SHORTLINE $SHORTLINE $SHORTLINE $SHORTLINE"

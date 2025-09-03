@@ -109,7 +109,13 @@ The gen_data.nml file contains the namelist for the datasets and filenames neede
 
 The code is executed by running the driver script, urban_prop.csh, on the command line.  Alternately the user can run the ncl scripts manually on the command line -- looking into the urban_prop.csh shell script illustrates how to do this.
 
-Running this code "out-of-the-box" (i.e. git clone without modification) creates the urban properties dataset described in Oleson and Feddema (2019).  The user can modify the mat_prop.csv file or any of the *_spec_*.csv file to create non-standard urban properties data for use in non-standard CESM experiments.  Modifying a file used in one step can alter the output of all subsequent steps.  Here are some examples:
+Running this code "out-of-the-box" (i.e. git clone without modification) creates the urban properties dataset described in Oleson and Feddema (2019).  Note that avg_landgcells is set to True by default in urban_prop.csh.  This implements averaging over 1km LAND gridcells instead of all gridcells to produce the 0.05deg data. This reproduces  the Oleson and Feddema (2010) data (the optional surface dataset) for all fields except for PCT_URBAN where the max differences there are only
+      1.4210854715202e-14
+      -1.4210854715202e-14
+Alternatively, the data can also be reproduced exactly (bfb) by checking out this hash in the repository - 7481ac1.
+Set avg_landgcells = False otherwise. This method was implemented in ctsm5.2 mksurfdata_esmf.
+
+The user can modify the mat_prop.csv file or any of the *_spec_*.csv file to create non-standard urban properties data for use in non-standard CESM experiments.  Modifying a file used in one step can alter the output of all subsequent steps.  Here are some examples:
 
 (example 1) in mat_prop.csv (which specifies basic material properties), one could change the thermal conductivity of insulated wool, which then would cause a change in the properties of any roof or wall that contains insulated wool, and also cause a change the properties of any city type that uses buildings made of roofs or walls that contain insulated wool.
 

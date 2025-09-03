@@ -20,6 +20,8 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/shea_util.ncl"
 ;================================================================================
 
 begin
+
+   avg_landgcells = getenv("avg_landgcells")
    subName = "(gen_05deg_data: main) "
 
 ;  LID = systemfunc("date +%y%m%d-%H%M%S")   ; get Log ID from command line
@@ -229,7 +231,9 @@ print(subName+"-----------------------------------------------------------------
 
      ;--- get indices of unmasked 1km cells ---
      indx         = ind(landmask1d .eq. 1)  ; ? should be (lndmask1d .ne. 0b)
-     ;num_valid    = num(landmask1d .eq. 1)  ; ? should be (lndmask1d .ne. 0b)
+     if (avg_landgcells .eq. "True") then
+       num_valid    = num(landmask1d .eq. 1)  ; ? should be (lndmask1d .ne. 0b)
+     end if
 
      ;--- aggregate 1km data to 0.05degree grid ----
      if (.not.(all(ismissing(indx)))) then
@@ -238,10 +242,16 @@ print(subName+"-----------------------------------------------------------------
        ;num_tbd = int2dble(num(dens_class1d(indx) .eq. 1b))
        ;num_hd  = int2dble(num(dens_class1d(indx) .eq. 2b))
        ;num_md  = int2dble(num(dens_class1d(indx) .eq. 3b))
-       
-       pct_urban_tmp(0,j,i) = avg(urban_fractionsub(0,:,:))*100.d; average over the total grid area 
-       pct_urban_tmp(1,j,i) = avg(urban_fractionsub(1,:,:))*100.d; instead of the land area
-       pct_urban_tmp(2,j,i) = avg(urban_fractionsub(2,:,:))*100.d
+
+       if (avg_landgcells .eq. "True") then
+         pct_urban_tmp(0,j,i) = sum(urban_fractionsub(0,:,:))*100.d/num_valid ; only average over land grids
+         pct_urban_tmp(1,j,i) = sum(urban_fractionsub(1,:,:))*100.d/num_valid
+         pct_urban_tmp(2,j,i) = sum(urban_fractionsub(2,:,:))*100.d/num_valid
+       else 
+         pct_urban_tmp(0,j,i) = avg(urban_fractionsub(0,:,:))*100.d; average over the total grid area
+         pct_urban_tmp(1,j,i) = avg(urban_fractionsub(1,:,:))*100.d; instead of the land area
+         pct_urban_tmp(2,j,i) = avg(urban_fractionsub(2,:,:))*100.d
+       end if
 
        if (dimsizes(indx) .gt. 2) then ; > 2 input cells: use region ID that occurs most often
          tmp = pdfx(region_id1d(indx),33,opt)

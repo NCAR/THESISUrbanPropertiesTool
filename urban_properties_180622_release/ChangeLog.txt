@@ -2,6 +2,24 @@
 SVN $Id: ChangeLog.txt 234 2018-06-22 21:02:03Z kauff $
 SVN $URL: https://svn-iam-thesis.cgd.ucar.edu/urban_properties/trunk_tags/urban_properties_180622/ChangeLog.txt $
 ==========================================================================================
+Originator: olyson
+Date: 2025 September 03
+Model: urban_properties
+Version: urban_properties_180622
+One-line summary: add avg_landgcells flag (default True) to make backwards compatible with
+CLM5 datasets (Oleson and Feddema, 2010)
+Changes made:
+
+avg_landgcells is added and set to True by default in urban_prop.csh.  This implements averaging
+over 1km LAND gridcells instead of all gridcells to produce the 0.05deg data. This reproduces
+the Oleson and Feddema (2010) data (the optional surface dataset) for all fields except for
+PCT_URBAN where the max differences there are only
+      1.4210854715202e-14
+      -1.4210854715202e-14
+Set avg_landgcells = False otherwise. This method was implemented in ctsm5.2 mksurfdata_esmf.
+
+==========================================================================================
+
 Originator: keerzhang, Face2sea, fang-bowen, olyson
 Date: 2022 March 25
 Model: urban_properties
